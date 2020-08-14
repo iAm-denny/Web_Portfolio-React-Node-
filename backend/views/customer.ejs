@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./stylesheets/style.css">
+    <title><%= title %></title>
+</head>
+<body>
+    <%- include('./Components/header.ejs')%>
+    <div>
+        <% customers.forEach(customer => { %>
+            <div class="customer-form">
+            <div><span>Name</span> - <%= customer.name%></div>
+            <div><span>Email</span> - <%= customer.email%></div>
+            <div><span>Phone</span> - <%= customer.phone%></div>
+            <div><span>Address</span> - <%= customer.address%></div>
+            <a class="btn" data-del="<%= customer.id%>"><button >Delete</button></a>
+            </div>
+            
+       <% }) %>
+    </div>
+    <script>
+        const btnDel = document.querySelector('a.btn');
+        btnDel.addEventListener('click' , () => {
+            const delURl = `/customers/${btnDel.dataset.del}`
+            fetch(delURl,{
+                method:'DELETE'
+            })
+            .then(res => res.json())
+            .then(res => window.location.href=res.redirect)
+            .catch(err => console.log(err))
+        })
+    </script>
+</body>
+</html>
